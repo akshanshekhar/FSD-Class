@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Marks System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h2 {
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .wrapper {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1000px;
+      margin: auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 65%;
+      background: #fff;
+      font-size: 15px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background: #f2f2f2;
+      font-weight: bold;
+    }
+    .controls {
+      width: 30%;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .controls h3 {
+      margin: 5px 0 10px;
+      font-size: 16px;
+    }
+    .controls button {
+      margin: 5px 5px 5px 0;
+      padding: 8px 12px;
+      background: #4A90E2;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .controls button:hover {
+      background: #357ABD;
+    }
+    .controls input {
+      width: 95%;
+      padding: 8px;
+      margin: 6px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .controls h4 {
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+    .tip {
+      font-size: 12px;
+      color: #777;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Student Marks System</h2>
+  <p style="font-size:13px;color:#555;">
+    A simple interactive demo to practice JavaScript arrays: add/remove/sort/calc avg/find max  
+    &nbsp;&nbsp;&nbsp;&nbsp;Total students: <span id="total">0</span>
+  </p>
+
+  <div class="wrapper">
+    <!-- Table -->
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Marks</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <!-- Controls -->
+    <div class="controls">
+      <h3>Controls</h3>
+      <button onclick="showHighest()">Show Highest</button>
+      <button onclick="showAverage()">Show Average</button><br>
+      <button onclick="sortByMarks()">Sort by Marks</button>
+      <button onclick="resetSample()">Reset Sample</button><br>
+      <button onclick="removeLast()">Remove Last</button>
+
+      <h4>Add a student</h4>
+      <input type="text" id="nameInput" placeholder="Student name">
+      <input type="number" id="marksInput" placeholder="Marks (0-100)">
+      <button style="background:#4CAF50;" onclick="addStudent()">Add Student</button>
+
+      <p class="tip">Tip: Press Enter in the Marks field to add quickly</p>
+      <p class="tip">Copy this file locally and open in your browser to run the demo.</p>
+    </div>
+  </div>
+
+  <script>
+    let students = [
+      { name: "Amit", marks: 85 },
+      { name: "Priya", marks: 92 },
+      { name: "Rohan", marks: 76 },
+      { name: "Neha", marks: 89 }
+    ];
+
+    function renderTable() {
+      const tbody = document.querySelector("#studentTable tbody");
+      tbody.innerHTML = "";
+      students.forEach(s => {
+        let row = `<tr><td>${s.name}</td><td>${s.marks}</td></tr>`;
+        tbody.innerHTML += row;
+      });
+      document.getElementById("total").textContent = students.length;
+    }
+
+    function addStudent() {
+      const name = document.getElementById("nameInput").value;
+      const marks = parseInt(document.getElementById("marksInput").value);
+      if (name && !isNaN(marks)) {
+        students.push({ name, marks });
+        renderTable();
+        document.getElementById("nameInput").value = "";
+        document.getElementById("marksInput").value = "";
+      } else {
+        alert("Enter valid name and marks!");
+      }
+    }
+
+    function removeLast() {
+      students.pop();
+      renderTable();
+    }
+
+    function showHighest() {
+      if (students.length === 0) return alert("No students available");
+      let max = Math.max(...students.map(s => s.marks));
+      alert("Highest Marks: " + max);
+    }
+
+    function showAverage() {
+      if (students.length === 0) return alert("No students available");
+      let avg = students.reduce((sum, s) => sum + s.marks, 0) / students.length;
+      alert("Average Marks: " + avg.toFixed(2));
+    }
+
+    function sortByMarks() {
+      students.sort((a, b) => b.marks - a.marks);
+      renderTable();
+    }
+
+    function resetSample() {
+      students = [
+        { name: "Amit", marks: 85 },
+        { name: "Priya", marks: 92 },
+        { name: "Rohan", marks: 76 },
+        { name: "Neha", marks: 89 }
+      ];
+      renderTable();
+    }
+
+    // Initial render
+    renderTable();
+  </script>
+</body>
+</html>
